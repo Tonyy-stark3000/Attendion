@@ -164,6 +164,13 @@
             >
                 Attendion
             </span>
+            
+            {#if page.url.pathname.startsWith('/admin')}
+                <div class="hidden md:flex flex-col ml-4 pl-4 border-l border-gray-300 dark:border-gray-700 justify-center">
+                    <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest leading-none mb-1">Department Admin</span>
+                    <span class="text-sm font-medium text-gray-900 dark:text-gray-100 leading-none">ENTC Department</span>
+                </div>
+            {/if}
         </div>
 
         <!-- Right: Theme + Profile -->
