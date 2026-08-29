@@ -135,7 +135,7 @@
 
 {#if page.status < 400}
     <header
-        class="fixed top-0 left-0 z-50 flex w-full items-center justify-between px-6 py-4"
+        class="fixed top-0 left-0 z-50 flex w-full items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-md border-b border-gray-200/60 dark:bg-gray-950/80 dark:border-gray-800/60"
     >
         <!-- Left: Attendion Branding -->
         <div class="flex items-center gap-2.5">

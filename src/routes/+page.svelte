@@ -28,7 +28,7 @@
 				Streamline your institution's attendance tracking with a modern, fast, and unified portal for faculty, students, and administration.
 			</p>
 			
-			<a href="/login" class="inline-flex items-center justify-center rounded-xl bg-purple-600 px-8 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 transition-all hover:scale-[1.02] active:scale-[0.98]">
+			<a href="/login" class="inline-flex items-center justify-center rounded-xl bg-purple-600 px-8 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-purple-600 transition-all hover:scale-[1.02] active:scale-[0.98]">
 				Get Started
 				<svg class="ml-2 -mr-1 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
 					<path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
