@@ -8,8 +8,8 @@
     </div>
     
     <div class="flex items-center space-x-3">
-        <!-- <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Faculty</span> -->
-        <!-- <div class="w-9 h-9 rounded-full bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center text-purple-700 dark:text-purple-300 font-semibold shadow-sm border border-purple-200 dark:border-purple-800">
+        <!-- <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Faculty</span>
+         <div class="w-9 h-9 rounded-full bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center text-purple-700 dark:text-purple-300 font-semibold shadow-sm border border-purple-200 dark:border-purple-800">
             F
         </div> -->
     </div>
