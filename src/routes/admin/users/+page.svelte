@@ -63,11 +63,13 @@
             const idx = students.findIndex(s => s.id === actionUser.id);
             if (idx !== -1) {
                 students[idx].status = actionType === 'activate' ? 'Active' : 'Inactive';
+                students = [...students];
             }
         } else {
             const idx = facultyList.findIndex(f => f.id === actionUser.id);
             if (idx !== -1) {
                 facultyList[idx].status = actionType === 'activate' ? 'Active' : 'Inactive';
+                facultyList = [...facultyList];
             }
         }
         
@@ -189,12 +191,35 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button onclick={() => openViewModal(student)} class="text-purple-600 hover:text-purple-900 dark:text-purple-400 dark:hover:text-purple-300 mr-4">View</button>
-                                    {#if student.status === 'Active'}
-                                        <button onclick={() => openConfirmAction(student, 'deactivate')} class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Deactivate</button>
-                                    {:else}
-                                        <button onclick={() => openConfirmAction(student, 'activate')} class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300">Activate</button>
-                                    {/if}
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button 
+                                            type="button"
+                                            onclick={() => openViewModal(student)} 
+                                            class="inline-flex items-center justify-center p-1.5 text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:text-purple-300 dark:hover:bg-purple-900/20 rounded-md transition-colors"
+                                            title="View Details"
+                                        >
+                                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                        </button>
+                                        {#if student.status === 'Active'}
+                                            <button 
+                                                type="button"
+                                                onclick={() => openConfirmAction(student, 'deactivate')} 
+                                                class="inline-flex items-center justify-center p-1.5 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20 rounded-md transition-colors"
+                                                title="Deactivate User"
+                                            >
+                                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
+                                            </button>
+                                        {:else}
+                                            <button 
+                                                type="button"
+                                                onclick={() => openConfirmAction(student, 'activate')} 
+                                                class="inline-flex items-center justify-center p-1.5 text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:text-green-300 dark:hover:bg-green-900/20 rounded-md transition-colors"
+                                                title="Activate User"
+                                            >
+                                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                            </button>
+                                        {/if}
+                                    </div>
                                 </td>
                             </tr>
                         {:else}
@@ -307,12 +332,35 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button onclick={() => openViewModal(faculty)} class="text-purple-600 hover:text-purple-900 dark:text-purple-400 dark:hover:text-purple-300 mr-4">View</button>
-                                    {#if faculty.status === 'Active'}
-                                        <button onclick={() => openConfirmAction(faculty, 'deactivate')} class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Deactivate</button>
-                                    {:else}
-                                        <button onclick={() => openConfirmAction(faculty, 'activate')} class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300">Activate</button>
-                                    {/if}
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button 
+                                            type="button"
+                                            onclick={() => openViewModal(faculty)} 
+                                            class="inline-flex items-center justify-center p-1.5 text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:text-purple-300 dark:hover:bg-purple-900/20 rounded-md transition-colors"
+                                            title="View Details"
+                                        >
+                                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                        </button>
+                                        {#if faculty.status === 'Active'}
+                                            <button 
+                                                type="button"
+                                                onclick={() => openConfirmAction(faculty, 'deactivate')} 
+                                                class="inline-flex items-center justify-center p-1.5 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20 rounded-md transition-colors"
+                                                title="Deactivate User"
+                                            >
+                                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
+                                            </button>
+                                        {:else}
+                                            <button 
+                                                type="button"
+                                                onclick={() => openConfirmAction(faculty, 'activate')} 
+                                                class="inline-flex items-center justify-center p-1.5 text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:text-green-300 dark:hover:bg-green-900/20 rounded-md transition-colors"
+                                                title="Activate User"
+                                            >
+                                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                            </button>
+                                        {/if}
+                                    </div>
                                 </td>
                             </tr>
                         {:else}

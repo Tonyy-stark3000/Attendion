@@ -26,10 +26,10 @@
 
     // Color maps for the division cards
     const colorMap = {
-        blue: { bg: 'bg-blue-50 dark:bg-blue-950/40', border: 'border-blue-200 dark:border-blue-800/60', hoverBorder: 'hover:border-blue-300 dark:hover:border-blue-700', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' },
-        purple: { bg: 'bg-purple-50 dark:bg-purple-950/40', border: 'border-purple-200 dark:border-purple-800/60', hoverBorder: 'hover:border-purple-300 dark:hover:border-purple-700', badge: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300' },
-        amber: { bg: 'bg-amber-50 dark:bg-amber-950/40', border: 'border-amber-200 dark:border-amber-800/60', hoverBorder: 'hover:border-amber-300 dark:hover:border-amber-700', badge: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300' },
-        emerald: { bg: 'bg-emerald-50 dark:bg-emerald-950/40', border: 'border-emerald-200 dark:border-emerald-800/60', hoverBorder: 'hover:border-emerald-300 dark:hover:border-emerald-700', badge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300' }
+        blue: { bg: 'bg-blue-50 dark:bg-blue-950/40', border: 'border-blue-200 dark:border-blue-800/60', hoverBorder: 'hover:border-blue-300 dark:hover:border-blue-700', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300', accent: 'text-blue-600 dark:text-blue-400' },
+        purple: { bg: 'bg-purple-50 dark:bg-purple-950/40', border: 'border-purple-200 dark:border-purple-800/60', hoverBorder: 'hover:border-purple-300 dark:hover:border-purple-700', badge: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300', accent: 'text-purple-600 dark:text-purple-400' },
+        amber: { bg: 'bg-amber-50 dark:bg-amber-950/40', border: 'border-amber-200 dark:border-amber-800/60', hoverBorder: 'hover:border-amber-300 dark:hover:border-amber-700', badge: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300', accent: 'text-amber-600 dark:text-amber-400' },
+        emerald: { bg: 'bg-emerald-50 dark:bg-emerald-950/40', border: 'border-emerald-200 dark:border-emerald-800/60', hoverBorder: 'hover:border-emerald-300 dark:hover:border-emerald-700', badge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300', accent: 'text-emerald-600 dark:text-emerald-400' }
     };
 
     let selectedDivision = $derived(divisions.find(d => d.id === selectedDivisionId));
@@ -52,15 +52,19 @@
         selectedDivisionId = null;
     }
 
-    function openAddModal(day = 'Monday') {
+    function openAddModal(day) {
         modalMode = 'add';
         currentLecture = null;
-        formDay = day;
+        formDay = typeof day === 'string' ? day : 'Monday';
         formStartTime = '09:00';
         formEndTime = '10:00';
-        formSubjectId = availableSubjects.length > 0 ? availableSubjects[0].id : '';
-        formFacultyId = mockFaculty.length > 0 ? mockFaculty[0].id : '';
-        formVenue = '';
+        
+        // Ensure defaults are selected if available
+        const currentSubjects = availableSubjects;
+        formSubjectId = currentSubjects && currentSubjects.length > 0 ? currentSubjects[0].id : '';
+        formFacultyId = mockFaculty && mockFaculty.length > 0 ? mockFaculty[0].id : '';
+        
+        formVenue = 'Room 201'; // Default venue
         formType = 'Lecture';
         formError = '';
         isModalOpen = true;
@@ -85,8 +89,13 @@
     }
 
     function saveLecture() {
-        if (!formSubjectId || !formFacultyId || !formVenue.trim()) {
-            formError = 'Please fill in all fields.';
+        if (!formSubjectId || !formFacultyId) {
+            formError = 'Please select a Subject and Faculty.';
+            return;
+        }
+
+        if (!formVenue || !formVenue.trim()) {
+            formError = 'Please enter a Venue.';
             return;
         }
 
@@ -175,15 +184,20 @@
                     onclick={() => openDivision(div.id)}
                 >
                     <div class="flex items-center justify-between mb-4">
-                         <span class="inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-bold uppercase tracking-widest {c.badge}">
+                         <span class="inline-flex items-center rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest {c.badge}">
                             {div.yearLabel}
                         </span>
-                        <div class="h-8 w-8 rounded-full bg-white/60 dark:bg-gray-900/50 flex items-center justify-center font-bold text-gray-700 dark:text-gray-200 border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
-                            {div.division}
+                    </div>
+                    
+                    <div class="mt-auto flex items-end justify-between">
+                        <div class="text-left">
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5">Division</p>
+                            <h2 class="text-3xl font-black tracking-tight text-gray-900 dark:text-white">{div.division}</h2>
+                        </div>
+                        <div class="h-10 w-10 rounded-full {c.bg} flex items-center justify-center text-gray-400 transition-colors group-hover:scale-110 duration-300">
+                            <svg class="h-5 w-5 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
                         </div>
                     </div>
-                   
-                    <h2 class="mt-auto text-xl font-bold text-gray-900 dark:text-white">{div.yearLabel} — Div {div.division}</h2>
                 </button>
             {/each}
         </div>
@@ -268,109 +282,106 @@
     {/if}
 </div>
 
-<!-- ─── Modal for Add/Edit Lecture ────────────────────────────── -->
+<!-- ─── Modal for Add/Edit Lecture (Rebuilt) ────────────────────────────── -->
 {#if isModalOpen}
-    <div class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
-        <!-- The wrapper handles outside clicks (mousedown to avoid drag selections) -->
-        <!-- svelte-ignore a11y_no_static_element_interactions -->
-        <div class="flex items-center justify-center min-h-screen p-4 text-center sm:p-0" onmousedown={closeModal}>
-            <div class="fixed inset-0 bg-gray-500/75 dark:bg-gray-900/80 backdrop-blur-sm transition-opacity" aria-hidden="true"></div>
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm p-4" role="dialog" onclick={closeModal}>
+        
+        <!-- Prevent click propagation to wrapper -->
+        <div class="w-full max-w-sm bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col" onclick={(e) => e.stopPropagation()}>
+            
+            <!-- Header -->
+            <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/30">
+                <h3 class="font-bold text-gray-900 dark:text-white text-lg">
+                    {modalMode === 'add' ? 'Add New Lecture' : 'Edit Lecture'}
+                </h3>
+                <button type="button" class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors" onclick={closeModal}>
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
 
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-            <!-- Prevent propagation so clicking inside doesn't close it -->
-            <div class="inline-block align-bottom bg-white dark:bg-gray-900 rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm w-full border border-gray-200 dark:border-gray-800" onmousedown={(e) => e.stopPropagation()}>
-                <div class="bg-white dark:bg-gray-900 px-4 pt-4 pb-3 sm:p-5 sm:pb-4">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
-                            {modalMode === 'add' ? 'Add Lecture' : 'Edit Lecture'}
-                        </h3>
-                        <button type="button" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" onclick={closeModal}>
-                            <span class="sr-only">Close</span>
-                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
+            <!-- Body -->
+            <div class="p-5 space-y-4">
+                {#if formError}
+                    <div class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-lg text-sm font-medium border border-red-100 dark:border-red-900/50">
+                        {formError}
                     </div>
+                {/if}
 
-                    <div class="space-y-3">
-                        {#if formError}
-                            <div class="rounded-md bg-red-50 dark:bg-red-900/20 p-2.5 border border-red-200 dark:border-red-800/50 text-xs text-red-800 dark:text-red-300">
-                                {formError}
-                            </div>
-                        {/if}
-
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Day</label>
-                                <select bind:value={formDay} class="block w-full rounded-md border-gray-300 py-1.5 px-2.5 text-sm shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:border-gray-700 dark:bg-gray-950 dark:text-white">
-                                    {#each days as d}
-                                        <option value={d}>{d}</option>
-                                    {/each}
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Type</label>
-                                <select bind:value={formType} class="block w-full rounded-md border-gray-300 py-1.5 px-2.5 text-sm shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:border-gray-700 dark:bg-gray-950 dark:text-white">
-                                    <option value="Lecture">Lecture</option>
-                                    <option value="Practical">Practical</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Start Time</label>
-                                <input type="time" bind:value={formStartTime} class="block w-full rounded-md border-gray-300 py-1.5 px-2.5 text-sm shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:border-gray-700 dark:bg-gray-950 dark:text-white" />
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">End Time</label>
-                                <input type="time" bind:value={formEndTime} class="block w-full rounded-md border-gray-300 py-1.5 px-2.5 text-sm shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:border-gray-700 dark:bg-gray-950 dark:text-white" />
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Subject</label>
-                            <select bind:value={formSubjectId} class="block w-full rounded-md border-gray-300 py-1.5 px-2.5 text-sm shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:border-gray-700 dark:bg-gray-950 dark:text-white">
-                                {#each availableSubjects as sub}
-                                    <option value={sub.id}>{sub.name}</option>
-                                {/each}
-                            </select>
-                            {#if availableSubjects.length === 0}
-                                <p class="text-xs text-red-500 mt-1">No subjects configured for this year.</p>
-                            {/if}
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Faculty</label>
-                                <select bind:value={formFacultyId} class="block w-full rounded-md border-gray-300 py-1.5 px-2.5 text-sm shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:border-gray-700 dark:bg-gray-950 dark:text-white">
-                                    {#each mockFaculty as fac}
-                                        <option value={fac.id}>{fac.name}</option>
-                                    {/each}
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Venue</label>
-                                <input type="text" bind:value={formVenue} placeholder="Room 201" class="block w-full rounded-md border-gray-300 py-1.5 px-2.5 text-sm shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:border-gray-700 dark:bg-gray-950 dark:text-white" />
-                            </div>
-                        </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5 uppercase tracking-wider">Day</label>
+                        <select bind:value={formDay} class="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                            {#each days as d}
+                                <option value={d}>{d}</option>
+                            {/each}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5 uppercase tracking-wider">Type</label>
+                        <select bind:value={formType} class="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                            <option value="Lecture">Lecture</option>
+                            <option value="Practical">Practical</option>
+                        </select>
                     </div>
                 </div>
-                <div class="bg-gray-50 dark:bg-gray-800/50 px-4 py-3 sm:px-5 flex flex-row-reverse justify-between border-t border-gray-200 dark:border-gray-800">
-                    <div class="flex gap-2">
-                         <button type="button" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1.5 bg-purple-600 text-sm font-medium text-white hover:bg-purple-700 focus:outline-none transition-colors" onclick={saveLecture}>
-                            Save
-                        </button>
-                        <button type="button" class="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-3 py-1.5 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none transition-colors" onclick={closeModal}>
-                            Cancel
-                        </button>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5 uppercase tracking-wider">Start Time</label>
+                        <input type="time" bind:value={formStartTime} class="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500" />
                     </div>
-                    {#if modalMode === 'edit'}
-                        <button type="button" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1.5 bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 text-sm font-medium hover:bg-red-200 dark:hover:bg-red-900/50 focus:outline-none transition-colors" onclick={deleteLecture}>
-                            Remove
-                        </button>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5 uppercase tracking-wider">End Time</label>
+                        <input type="time" bind:value={formEndTime} class="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500" />
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5 uppercase tracking-wider">Subject</label>
+                    {#if availableSubjects.length > 0}
+                        <select bind:value={formSubjectId} class="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                            {#each availableSubjects as sub}
+                                <option value={sub.id}>{sub.name}</option>
+                            {/each}
+                        </select>
+                    {:else}
+                        <div class="text-sm text-red-500 bg-red-50 dark:bg-red-900/10 p-2 rounded border border-red-100 dark:border-red-900/30">No subjects available for this year.</div>
                     {/if}
                 </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5 uppercase tracking-wider">Faculty</label>
+                        <select bind:value={formFacultyId} class="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                            {#each mockFaculty as fac}
+                                <option value={fac.id}>{fac.name}</option>
+                            {/each}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5 uppercase tracking-wider">Venue</label>
+                        <input type="text" bind:value={formVenue} placeholder="e.g. Room 201" class="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500" />
+                    </div>
+                </div>
             </div>
+
+            <!-- Footer -->
+            <div class="p-5 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30 flex flex-row-reverse gap-3">
+                <button type="button" class="px-5 py-2 rounded-lg bg-purple-600 text-white font-medium text-sm hover:bg-purple-700 focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all shadow-sm" onclick={saveLecture}>
+                    {modalMode === 'add' ? 'Save Lecture' : 'Update Lecture'}
+                </button>
+                <button type="button" class="px-5 py-2 rounded-lg bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-all shadow-sm" onclick={closeModal}>
+                    Cancel
+                </button>
+                {#if modalMode === 'edit'}
+                    <button type="button" class="mr-auto px-4 py-2 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 font-medium text-sm hover:bg-red-200 dark:hover:bg-red-900/50 transition-all" onclick={deleteLecture}>
+                        Delete
+                    </button>
+                {/if}
+            </div>
+
         </div>
     </div>
 {/if}
