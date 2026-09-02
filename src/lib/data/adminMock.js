@@ -1,5 +1,5 @@
 /**
- * Admin Portal — Mock Data
+ * Admin Portal ï¿½ Mock Data
  * Faculty Attendance sessions for the Admin Attendance view.
  */
 
