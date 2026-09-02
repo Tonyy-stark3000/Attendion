@@ -109,6 +109,7 @@
 <script>
     import { onMount } from 'svelte';
     import { page } from '$app/state';
+    import { base } from '$app/paths';
 
     let clicked = $state(false);
 
@@ -165,7 +166,7 @@
                 Attendion
             </span>
             
-            {#if page.url.pathname.startsWith('/admin')}
+            {#if page.url.pathname.startsWith(`${base}/admin`)}
                 <div class="hidden md:flex flex-col ml-4 pl-4 border-l border-gray-300 dark:border-gray-700 justify-center">
                     <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest leading-none mb-1">Department Admin</span>
                     <span class="text-sm font-medium text-gray-900 dark:text-gray-100 leading-none">ENTC Department</span>
@@ -219,7 +220,7 @@
             </button>
 
             <!-- Profile: Portal pages only -->
-            {#if page.url.pathname !== '/'}
+            {#if page.url.pathname !== `${base}/` && page.url.pathname !== base && page.url.pathname !== '/'}
                 <button
                     type="button"
                     aria-label="Profile"

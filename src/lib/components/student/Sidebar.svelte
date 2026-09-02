@@ -1,5 +1,6 @@
 <script>
     import { page } from '$app/state';
+    import { base } from '$app/paths';
 
     const navItems = [
         {
@@ -26,8 +27,9 @@
 
     /** Dashboard link is active on exactly /student */
     function isActive(href, pathname) {
-        if (href === '/student') return pathname === '/student';
-        return pathname.startsWith(href);
+        const fullPath = `${base}${href}`;
+        if (href === '/student') return pathname === fullPath;
+        return pathname.startsWith(fullPath);
     }
 </script>
 
@@ -43,7 +45,7 @@
         {#each navItems as item}
             {@const active = isActive(item.href, page.url.pathname)}
             <a
-                href={item.href}
+                href={`${base}${item.href}`}
                 class="group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150
                     {active
                         ? 'bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-300'
@@ -88,7 +90,7 @@
     {#each navItems as item}
         {@const active = isActive(item.href, page.url.pathname)}
         <a
-            href={item.href}
+            href={`${base}${item.href}`}
             class="flex flex-1 flex-col items-center justify-center gap-1 py-2.5 text-[11px] font-medium transition-colors
                 {active ? 'text-purple-700 dark:text-purple-400' : 'text-gray-500 dark:text-gray-400'}"
         >

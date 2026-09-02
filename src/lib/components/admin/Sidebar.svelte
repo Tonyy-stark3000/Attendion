@@ -1,5 +1,6 @@
 <script>
     import { page } from '$app/state';
+    import { base } from '$app/paths';
 
     const menuItems = [
         {
@@ -40,8 +41,9 @@
     ];
 
     function isActive(href, pathname) {
-        if (href === '/admin') return pathname === '/admin';
-        return pathname.startsWith(href);
+        const fullPath = `${base}${href}`;
+        if (href === '/admin') return pathname === fullPath;
+        return pathname.startsWith(fullPath);
     }
 </script>
 
@@ -56,7 +58,7 @@
         {#each menuItems as item}
             {@const active = isActive(item.path, page.url.pathname)}
             <a
-                href={item.path}
+                href={`${base}${item.path}`}
                 class="group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150
                     {active
                         ? 'bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-300'
@@ -98,7 +100,7 @@
     {#each menuItems as item}
         {@const active = isActive(item.path, page.url.pathname)}
         <a
-            href={item.path}
+            href={`${base}${item.path}`}
             class="flex flex-1 min-w-[72px] flex-col items-center justify-center gap-1 py-2.5 text-[11px] font-medium transition-colors
                 {active ? 'text-purple-700 dark:text-purple-400' : 'text-gray-500 dark:text-gray-400'}"
         >

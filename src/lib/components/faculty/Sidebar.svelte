@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 
 	const navItems = [
 		{
@@ -30,7 +31,8 @@
 
 	function isActive(item) {
 		const path = $page.url.pathname;
-		return item.exact ? path === item.href : path.startsWith(item.href);
+		const fullPath = `${base}${item.href}`;
+		return item.exact ? path === fullPath : path.startsWith(fullPath);
 	}
 </script>
 
@@ -43,7 +45,7 @@
 		{#each navItems as item}
 			{@const active = isActive(item)}
 			<a
-				href={item.href}
+				href={`${base}${item.href}`}
 				class="flex items-center px-3 py-2.5 rounded-lg font-medium transition-colors {active
 					? 'bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
 					: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white'}"

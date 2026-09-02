@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 	import Sidebar from '$lib/components/faculty/Sidebar.svelte';
 	import Topbar from '$lib/components/faculty/Topbar.svelte';
 	let { children } = $props();
@@ -33,7 +34,8 @@
 
 	function isActive(item) {
 		const path = $page.url.pathname;
-		return item.exact ? path === item.href : path.startsWith(item.href);
+		const fullPath = `${base}${item.href}`;
+		return item.exact ? path === fullPath : path.startsWith(fullPath);
 	}
 </script>
 
@@ -52,7 +54,7 @@
 		<div class="flex justify-around items-center h-16 px-2">
 			{#each navItems as item}
 				{@const active = isActive(item)}
-				<a href={item.href} class="flex flex-col items-center justify-center w-full h-full {active ? 'text-purple-600 dark:text-purple-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors'}">
+				<a href={`${base}${item.href}`} class="flex flex-col items-center justify-center w-full h-full {active ? 'text-purple-600 dark:text-purple-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors'}">
 					<svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						{@html item.paths}
 					</svg>
